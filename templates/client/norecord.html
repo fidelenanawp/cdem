@@ -1,0 +1,59 @@
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aucun enregistrement trouvé</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<main class="verification verification--narrow">
+
+    <!-- En-tête -->
+    <header class="verification__header verification__header--error">
+        <div class="avatar avatar--error" aria-hidden="true">!</div>
+        <div class="identity">
+            <p class="identity__label">Vérification des informations</p>
+            <h1 class="identity__name">Aucun enregistrement trouvé</h1>
+            <p class="identity__sub">Le code scanné ne correspond à aucun candidat.</p>
+        </div>
+        <span class="badge badge--error">&#10005; Introuvable</span>
+    </header>
+
+    <!-- Détail -->
+    <section class="card">
+        <h2 class="card__title card__title--error">Résultat de la recherche</h2>
+        <dl class="fields">
+<!--            <div class="field field&#45;&#45;full">-->
+<!--                <dt>Code QR recherché</dt>-->
+<!--                <dd class="mono">{{ code|default:"—" }}</dd>-->
+<!--            </div>-->
+            <div class="field field--full">
+                <dt>Statut</dt>
+                <dd><span class="status status--error">Aucun dossier correspondant</span></dd>
+            </div>
+        </dl>
+
+        <div class="notice">
+            <p class="notice__title">Vérifications suggérées</p>
+            <ul class="notice__list">
+                <li>Scannez à nouveau le code en vous assurant qu'il est net et entièrement visible.</li>
+                <li>Vérifiez que l'invitation correspond bien à cet événement.</li>
+                <li>Si le problème persiste, recherchez le client par son nom ou contactez l'administrateur.</li>
+            </ul>
+        </div>
+    </section>
+
+<!--    &lt;!&ndash; Action &ndash;&gt;-->
+<!--    <footer class="verification__footer">-->
+<!--        <p class="footer__note">Aucune donnée n'a été modifiée.</p>-->
+<!--        <a href="{% url 'home' %}" class="btn btn&#45;&#45;primary">Retour à l'accueil</a>-->
+<!--    </footer>-->
+
+</main>
+
+</body>
+</html>
+
+

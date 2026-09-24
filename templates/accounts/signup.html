@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "home/base.html" %}
 
-</body>
-</html>
+{% block title %}Créer un utilisateur | Zawa Transit{% endblock %}
+
+{% block content  %}
+<div class="card form-card">
+    <p class="eyebrow">Administration</p><h1>Créer un accès.</h1><p class="lead">Ajoutez un membre à l'équipe Zawa Transit.</p>
+    <div class="alert">{{ error }}</div>
+    <form method="POST">
+    {% csrf_token %}
+
+         <div class="field">
+            <label for="first_name">Prénom</label>
+            <input type="text" name="first_name" id="first_name" required>
+        </div>
+        <br> <div class="field">
+            <label for="last_name">Nom</label>
+            <input type="text" name="last_name" id="last_name" required>
+        </div>
+        <br>
+         <div class="field">
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" name="username" id="username" required>
+        </div>
+        <br>
+
+
+        <div class="field">
+            <label for="password">Mot de passe</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <br>
+
+<!--        <div class="field"><label for="profile">Profil</label><select name="profile" id="profile" required><option value="">Sélectionner un profil</option><option value="admin">Administrateur</option><option value="user">Utilisateur</option></select></div>-->
+        <div class="form-actions"><button class="btn btn-primary" type="submit">Créer l'utilisateur</button></div>
+    </form>
+</div>
+{% endblock  %}

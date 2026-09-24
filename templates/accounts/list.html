@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-</body>
-</html>
+
+{% extends 'home/base.html' %}
+
+{% block title %} Utilisateurs | Destination Manitoba{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+<!--        <p class="eyebrow">Destination</p>-->
+        <h2>Liste des utilisateurs</h2>
+<!--        <p class="lead">Liste des utilisateur</p>-->
+    </div>
+    <a class="btn btn-primary" href="{% url 'adduser' %}">+ Ajouter un utilisateur</a>
+
+</div>
+<div class="card table-wrap">
+    <table>
+        <thead>
+        <tr>
+            <th>Nom Prénom</th>
+            <th>Identifiant</th>
+        </tr>
+<!--            <th></th></tr>-->
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td class="table-title">{{ user.first_name }} {{ user.last_name }}</td>
+            <td>{{ user.username }}</td>
+
+<!--            {% if user.validated %}-->
+<!--            <td><span class="badge">Validé</span></td>-->
+<!--            {% else %}-->
+<!--            <td><span class="badge">En cours</span></td>-->
+
+<!--            {% endif %}-->
+<!--            <td>-->
+<!--                <div class="actions"><a class="btn btn-ghost btn-small" href="#">Détails</a>-->
+<!--                </div>-->
+<!--            </td>-->
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" class="empty-state">Aucun candidat enregistré.</td>
+        </tr>
+        {% endfor %}
+</tbody>
+    </table>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,164 @@
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification — {{ client.first_name }} {{ client.last_name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<main class="verification">
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message message--{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- En-tête -->
+    <header class="verification__header">
+        <div class="avatar">{{ client.first_name|first|upper }}{{ client.last_name|first|upper }}</div>
+        <div class="identity">
+            <p class="identity__label">Vérification des informations</p>
+            <h1 class="identity__name">{{ client.first_name }} {{ client.last_name }}</h1>
+            <p class="identity__sub">{{ client.occupation|default:"Profession non renseignée" }}</p>
+        </div>
+        {% if client.validated %}
+            <span class="badge badge--valid">&#10003; Validé</span>
+        {% else %}
+            <span class="badge badge--pending">&#9679; En attente</span>
+        {% endif %}
+    </header>
+
+    <div class="verification__grid">
+
+        <!-- Informations personnelles -->
+        <section class="card">
+            <h2 class="card__title">Informations personnelles</h2>
+            <dl class="fields">
+                <div class="field">
+                    <dt>Prénom</dt>
+                    <dd>{{ client.first_name }}</dd>
+                </div>
+                <div class="field">
+                    <dt>Nom</dt>
+                    <dd>{{ client.last_name }}</dd>
+                </div>
+                <div class="field field--full">
+                    <dt>Profession</dt>
+                    <dd>{{ client.occupation|default:"—" }}</dd>
+                </div>
+                <div class="field field--full">
+                    <dt>Années d'expérience</dt>
+                    <dd>{{ client.year_of_experience|default:"—" }}</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- Coordonnées -->
+        <section class="card">
+            <h2 class="card__title">Coordonnées</h2>
+            <dl class="fields">
+                <div class="field field--full">
+                    <dt>Adresse e-mail</dt>
+                    <dd>
+                        {% if client.email %}
+                            <a href="mailto:{{ client.email }}">{{ client.email }}</a>
+                        {% else %}—{% endif %}
+                    </dd>
+                </div>
+                <div class="field field--full">
+                    <dt>Téléphone</dt>
+                    <dd>
+                        {% if client.phone %}
+                            <a href="tel:{{ client.phone }}">{{ client.phone }}</a>
+                        {% else %}—{% endif %}
+                    </dd>
+                </div>
+                <div class="field">
+                    <dt>Pays</dt>
+                    <dd>{{ client.country|default:"—" }}</dd>
+                </div>
+                <div class="field">
+                    <dt>Ville</dt>
+                    <dd>{{ client.city|default:"—" }}</dd>
+                </div>
+                <div class="field field--full">
+                    <dt>Adresse</dt>
+                    <dd>{{ client.address|default:"—" }}</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- Événement -->
+        <section class="card">
+            <h2 class="card__title">Événement</h2>
+            <dl class="fields">
+                <div class="field field--full">
+                    <dt>Lieu</dt>
+                    <dd>{{ client.event_location|default:"—" }}</dd>
+                </div>
+                <div class="field">
+                    <dt>Date</dt>
+                    <dd>{% if client.event_date %}{{ client.event_date|date:"d/m/Y" }}{% else %}—{% endif %}</dd>
+                </div>
+                <div class="field">
+                    <dt>Heure</dt>
+                    <dd>{% if client.event_time %}{{ client.event_time|time:"H:i" }}{% else %}—{% endif %}</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- Validation -->
+        <section class="card">
+            <h2 class="card__title">Validation</h2>
+            <dl class="fields">
+                <div class="field">
+                    <dt>Statut</dt>
+                    <dd>
+                        {% if client.validated %}
+                            <span class="status status--valid">Validé</span>
+                        {% else %}
+                            <span class="status status--pending">Non validé</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div class="field">
+                    <dt>Code QR</dt>
+                    <dd class="mono">{{ client.qrcode|default:"—" }}</dd>
+                </div>
+                <div class="field">
+                    <dt>Validé par</dt>
+                    <dd>{{ client.valided_by|default:"—" }}</dd>
+                </div>
+                <div class="field">
+                    <dt>Date de validation</dt>
+                    <dd>{% if client.validation_datetime %}{{ client.validation_datetime|date:"d/m/Y H:i" }}{% else %}—{% endif %}</dd>
+                </div>
+            </dl>
+        </section>
+
+    </div>
+
+    <!-- Action -->
+    <footer class="verification__footer">
+        {% if client.validated %}
+            <p class="footer__note">
+                Ce dossier a été validé{% if client.valided_by %} par <strong>{{ client.valided_by }}</strong>{% endif %}{% if client.validation_datetime %} le {{ client.validation_datetime|date:"d/m/Y à H:i" }}{% endif %}.
+            </p>
+        {% else %}
+            <p class="footer__note">Vérifiez l'ensemble des informations avant de confirmer.</p>
+            <form method="post" action="{% url 'client_validate' client.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn--primary">Confirmer et valider</button>
+            </form>
+        {% endif %}
+    </footer>
+
+</main>
+
+</body>
+</html>

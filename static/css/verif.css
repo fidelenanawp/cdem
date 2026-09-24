@@ -1,0 +1,317 @@
+/* =========================================================
+   Page de vérification des informations client
+   ========================================================= */
+
+:root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --border: #e3e7ee;
+    --text: #1c2430;
+    --text-muted: #6b7686;
+    --primary: #e50d1f;
+    --primary-hover: #173d6e;
+    --success: #1e7a4c;
+    --success-bg: #e6f4ec;
+    --warning: #9a6200;
+    --warning-bg: #fdf3e1;
+    --error: #b42318;
+    --error-bg: #fdecea;
+    --radius: 10px;
+    --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 1px 3px rgba(16, 24, 40, .08);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Conteneur ---------- */
+.verification {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 16px 56px;
+}
+
+/* ---------- Messages Django ---------- */
+.messages {
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+.message--success { background: var(--success-bg); color: var(--success); border-color: #bfe3cf; }
+.message--warning { background: var(--warning-bg); color: var(--warning); border-color: #f3dcae; }
+.message--error   { background: var(--error-bg);   color: var(--error);   border-color: #f5c2bd; }
+.message--info    { background: #e8f0fb;           color: var(--primary); border-color: #c7d8f1; }
+
+/* ---------- En-tête ---------- */
+.verification__header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+}
+
+.avatar {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+
+.identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.identity__label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-muted);
+}
+
+.identity__name {
+    margin: 2px 0;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.identity__sub {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+/* ---------- Badges / statuts ---------- */
+.badge,
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 999px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.status {
+    padding: 2px 10px;
+    font-size: 13px;
+}
+
+.badge--valid,
+.status--valid {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.badge--pending,
+.status--pending {
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+
+/* ---------- Grille de cartes ---------- */
+.verification__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 24px;
+}
+
+.card__title {
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--primary);
+}
+
+/* ---------- Champs ---------- */
+.fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 20px;
+    margin: 0;
+}
+
+.field--full {
+    grid-column: 1 / -1;
+}
+
+.field dt {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 3px;
+}
+
+.field dd {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.field a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.field a:hover {
+    text-decoration: underline;
+}
+
+.mono {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 14px;
+}
+
+/* ---------- Pied de page / action ---------- */
+.verification__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.footer__note {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.footer__note strong {
+    color: var(--text);
+}
+
+.verification__footer form {
+    margin: 0;
+}
+
+.btn {
+    display: inline-block;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .15s ease, box-shadow .15s ease;
+}
+
+.btn--primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn--primary:hover {
+    background: var(--primary-hover);
+}
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(31, 78, 140, .35);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .verification {
+        padding-top: 20px;
+    }
+
+    .verification__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .verification__header {
+        flex-wrap: wrap;
+        padding: 20px;
+    }
+
+    .identity__name {
+        font-size: 22px;
+    }
+
+    .verification__footer {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .fields {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Impression ---------- */
+@media print {
+    body { background: #fff; }
+    .card,
+    .verification__header,
+    .verification__footer { box-shadow: none; }
+    .verification__footer form,
+    .messages { display: none; }
+}

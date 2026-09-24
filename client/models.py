@@ -17,6 +17,8 @@ class Client(models.Model):
     validation_datetime = models.DateTimeField(blank=True, null=True)
     valided_by = models.CharField(blank=True, null=True, max_length=50)
     qrcode = models.CharField(blank=True, null=True, max_length=50)
+    year_of_experience=models.CharField(blank=True, null=True, max_length=50)
+
 
     def __str__(self):
         return self.qrcode+ " | " + self.first_name+ " " + self.last_name

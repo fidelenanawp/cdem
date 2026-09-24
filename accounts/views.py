@@ -8,30 +8,36 @@ User = get_user_model()
 # Create your views here.
 
 def list_accounts(request):
-    users = User.objects.all()
-    context = {
-        'users': users,
-    }
-    return render(request, "accounts/list.html", context)
-
+    if request.user.is_authenticated:
+        users = User.objects.all()
+        context = {
+            'users': users,
+        }
+        return render(request, "accounts/list.html", context)
+    return redirect('home')
 
 # Create your views here.
 
 def signup(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        profile = request.POST.get('profile')
 
-        try:
-            existing_user = User.objects.get(username=username)
-            return render(request, 'accounts/signup.html', {'error': 'Username already exists.'})
-        except User.DoesNotExist:
-            user = User.objects.create_user(username=username, password=password, profil=profile)
-            return redirect('list_accounts')
+    if request.user.is_authenticated:
 
-    return render(request, 'accounts/signup.html')
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            profile = request.POST.get('profile')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
 
+            try:
+                existing_user = User.objects.get(username=username)
+                return render(request, 'accounts/signup.html', {'error': 'Username already exists.'})
+            except User.DoesNotExist:
+                user = User.objects.create_user(username=username, password=password, profil=profile,last_name=last_name,first_name=first_name)
+                return redirect('list_accounts')
+
+        return render(request, 'accounts/signup.html')
+    return redirect('home')
 
 def login_user(request):
     if request.method == 'POST':
@@ -54,31 +60,36 @@ def logout_user(request):
 
 
 def edit_profile(request, pk):
-    user = User.objects.get(pk=pk)
-    context = {
-        'user': user
-    }
 
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('newpassword')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
+    if request.user.is_authenticated:
 
-        try:
-            user = User.objects.get(pk=pk)
 
-            user.last_name = last_name
-            user.set_password(password)
-            user.first_name = first_name
+        user = User.objects.get(pk=pk)
+        context = {
+            'user': user
+        }
 
-            user.save()
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('newpassword')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
 
-            login(request, user)
-            return redirect('home')
+            try:
+                user = User.objects.get(pk=pk)
 
-        except User.DoesNotExist:
+                user.last_name = last_name
+                user.set_password(password)
+                user.first_name = first_name
 
-            return render(request, 'accounts/editprofile.html', {'error': 'An error occured'})
+                user.save()
 
-    return render(request, 'accounts/editprofile.html', context)
+                login(request, user)
+                return redirect('home')
+
+            except User.DoesNotExist:
+
+                return render(request, 'accounts/editprofile.html', {'error': 'An error occured'})
+
+        return render(request, 'accounts/editprofile.html', context)
+    return redirect('home')

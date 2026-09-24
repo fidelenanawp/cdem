@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "home/base.html" %}
 
-</body>
-</html>
+{% block title %}Connexion | CDEM Destination Manitoba{% endblock %}
+
+{% block content  %}
+<div class="card form-card">
+    <p class="eyebrow">Espace équipe</p><h1>Bon retour.</h1><p class="lead">Connectez-vous pour gérer les participants à Destination Manitoba.</p>
+    <div class="alert">{{ error }}</div>
+    <form method="POST">
+    {% csrf_token %}
+        <div class="field"><label for="username">Nom d'utilisateur</label><input type="text" name="username" id="username" required></div>
+        <div class="field"><label for="password">Mot de passe</label><input type="password" name="password" id="password" required></div>
+        <div class="form-actions"><button class="btn btn-primary" type="submit">Se connecter</button></div>
+    </form>
+</div>
+{% endblock  %}
